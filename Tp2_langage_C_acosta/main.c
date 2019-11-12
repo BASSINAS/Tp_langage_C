@@ -5,6 +5,26 @@ double f(double x)
         {
             return x*x; // Cette fonction est un exemple
         }
+void writeToAFile (double *tab, int taille)
+        {
+            int j;
+            FILE *ptr_fichier_Ascii = NULL;
+            ptr_fichier_Ascii = fopen("fichier.Ascii","w");
+            if (ptr_fichier_Ascii == NULL)
+                {
+                    printf(" le fichier n'a pas pu etre ouvert");
+                    exit(1);
+                }
+            else
+                {
+                    for (j = 0; j < taille; j++)
+                        {
+                            fprintf(ptr_fichier_Ascii,"tab[%d] = %lf\n",j+1,tab[j]);
+                        }
+                    fclose(ptr_fichier_Ascii);
+                }
+
+        }
 int main()
         {
             int i =0;
@@ -25,6 +45,7 @@ int main()
                     {
                         x+=pas;
                         ptr_tableau[i] = f(x);
+                        writeToAFile(ptr_tableau,n);
                         printf("x = %f\t tab[%d] = %f\n",x,i+1,ptr_tableau[i]);
                     }
     return 0;
