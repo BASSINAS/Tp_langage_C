@@ -25,11 +25,35 @@ void writeToAFile (double *tab, int taille)
                 }
 
         }
+int readFromAFile(FILE *fp, double *tab, int n)
+    {
+        int z;
+        FILE * ptr_fichierAscii = NULL;
+        ptr_fichierAscii = fopen("fichier.Ascii","r");
+        if (ptr_fichierAscii == NULL)
+            {
+                printf(" le fichier n'a pu etre ouvert");
+                exit(1);
+            }
+        else
+            {
+                printf("\n\n");
+               for (z = 0; z < n; z++)
+                    {
+                        fscanf(ptr_fichierAscii,"%lf",&tab[z]);
+
+                        printf("tab[%d] = %lf\n",z+1,tab[z]);
+                    }
+                fclose(ptr_fichierAscii);
+            }
+        return 0;
+    }
 int main()
         {
             int i =0;
             double a,b,pas,x;
             double *ptr_tableau = NULL;
+            FILE *fp = NULL;
             printf("a = ");
             scanf("%lf",&a);
             printf("b = ");
@@ -48,5 +72,6 @@ int main()
                         writeToAFile(ptr_tableau,n);
                         printf("x = %f\t tab[%d] = %f\n",x,i+1,ptr_tableau[i]);
                     }
+            readFromAFile(fp,ptr_tableau,n);
     return 0;
     }
