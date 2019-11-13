@@ -5,52 +5,28 @@ double f(double x)
         {
             return x*x; // Cette fonction est un exemple
         }
-void writeToAFile (double *tab, int taille)
-        {
-            int j;
-            FILE *ptr_fichier_Ascii = NULL;
-            ptr_fichier_Ascii = fopen("fichier.Ascii","w");
-            if (ptr_fichier_Ascii == NULL)
-                {
-                    printf(" le fichier n'a pas pu etre ouvert");
-                    exit(1);
-                }
-            else
-                {
-                    for (j = 0; j < taille; j++)
-                        {
-                            fprintf(ptr_fichier_Ascii,"tab[%d] = %lf\n",j+1,tab[j]);
-                        }
-                    fclose(ptr_fichier_Ascii);
-                }
+//size_t fwrite ( const void * ptr, size_t size, size_t count, FILE * stream )
+//        {
+//            int i;
+//            ptr = fopen("Fic.bin","wba");
+//            if (ptr == NULL)
+//                {
+//                    printf("erreur le fichier binaire n'a pas pu etre ouvert!");
+//                    exit(1);
+//                }
+//            else
+//                {
+//                    for(i = 0; i < count; i++)
+//                        {
+//                            fwrite(ptr,sizeof(size_t),count,stream);
+//                        }
+//                }
+//        fclose(ptr);
+//        }
 
-        }
-int readFromAFile(FILE *fp, double *tab, int n)
-    {
-        int z;
-        FILE * ptr_fichierAscii = NULL;
-        ptr_fichierAscii = fopen("fichier.Ascii","r");
-        if (ptr_fichierAscii == NULL)
-            {
-                printf(" le fichier n'a pu etre ouvert");
-                exit(1);
-            }
-        else
-            {
-                printf("\n\n");
-               for (z = 0; z < n; z++)
-                    {
-                        fscanf(ptr_fichierAscii,"%lf",&tab[z]);
-
-                        printf("tab[%d] = %lf\n",z+1,tab[z]);
-                    }
-                fclose(ptr_fichierAscii);
-            }
-        return 0;
-    }
 int main()
         {
-            int i =0;
+            int i;
             double a,b,pas,x;
             double *ptr_tableau = NULL;
             FILE *fp = NULL;
@@ -69,9 +45,19 @@ int main()
                     {
                         x+=pas;
                         ptr_tableau[i] = f(x);
-                        writeToAFile(ptr_tableau,n);
-                        printf("x = %f\t tab[%d] = %f\n",x,i+1,ptr_tableau[i]);
+                        printf("x = %f\t tab[%d] = %f \n",x,i+1,ptr_tableau[i]);
+                        fp = fopen("fic.bin","wb");
+                        if(fp == NULL)
+                            {
+                                printf("erreur d'ouverture du fichier");
+                                exit(1);
+                            }
+                        else
+                            {
+                                fwrite(ptr_tableau,sizeof(double),n,fp);
+                            }
                     }
-            readFromAFile(fp,ptr_tableau,n);
+            fclose(fp);
+
     return 0;
     }
